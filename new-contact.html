@@ -163,7 +163,10 @@
                       <label for="subject" class="field-label">Subject</label>
                       <input type="text" name="subject" id="subject" class="text-field w-input" required>
                     </div>
-                    <div class="form"></div>
+                    <div class="form">
+                      <label for="phone" class="field-label">Phone</label>
+                      <input type="tel" name="phone" id="phone" class="text-field w-input" inputmode="numeric" pattern="[0-9]*" maxlength="20" placeholder="Numbers only">
+                    </div>
                   </div>
 
                   <div class="form-row">
@@ -309,6 +312,13 @@
     const form = document.getElementById("contact-form");
     const statusEl = document.getElementById("status");
 
+    const phoneInput = document.getElementById("phone");
+    if (phoneInput) {
+      phoneInput.addEventListener("input", function () {
+        this.value = this.value.replace(/\D/g, "");
+      });
+    }
+
     const messageEl = document.getElementById("message");
     const msgCounterEl = document.getElementById("message-counter");
     const msgErrorEl = document.getElementById("message-error");
@@ -354,7 +364,7 @@
       }
 
       setMessageError("");
-      statusEl.textContent = "Sending...";
+      statusEl.textContent = "Sending... Please wait...";
 
       try {
         const res = await fetch("https://blkrim.com/forms/send.php", {
@@ -371,7 +381,7 @@
 
         form.reset();
         updateCounter();
-        statusEl.textContent = "Sent.";
+        statusEl.textContent = "Message sent successfully! We will get back to you soon.";
       } catch {
         statusEl.textContent = "Network error.";
       }
